@@ -1,2 +1,2 @@
 # valentin_depot
-Depot module open
+Depot open
