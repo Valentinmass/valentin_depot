@@ -8,10 +8,8 @@ read_csv2("subve.csv") -> subve #pour CSV en tidy
 subve
 
 #remettre les caractères correectement
-subve <- subve %>%
-  mutate(
-    REGION = stri_trans_general(REGION, "Latin-ASCII")
-  )
+subve %>%
+  mutate(REGION = stri_trans_general(REGION, "Latin-ASCII")) -> subve 
 
 ## les pivots ils ne servent à rien 
 
