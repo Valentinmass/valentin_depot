@@ -1,0 +1,63 @@
+################################# Script 1 : 04/02/2026 (téléchargement des images) #####################################
+#import des packages
+import os
+import requests
+def telecharger_images ():
+        
+    # suprimer les photos du dossier image pour importer juste le nombre que l'on veut
+    for f in os.listdir("images"): os.remove(os.path.join("images", f))
+    # creer un dossier image ds mon répertoir
+    if not os.path.exists("images"):
+        os.mkdir("images")
+
+    # je demande le nombre d'image à récuperer
+    nb = int(input ("Combien d'image veux-tu ? (Entre un nombre entier entre 1 et 50) :")) #Nous forcons en int du coup pas besion de faire une condition pour etre sur que la chose que l'utilisateur rentre soit bien un int.
+
+    if nb <= 0 or nb > 50: # si l'utilisateur n'écoute pas la consigne
+            print ("Erreur, le nombre choisi n'est pas dans l'intervalle demander. 5 images seront récupérées par defaut." )
+            nb = 5 # par defaut 5 images seront téléchargées
+    for i in range(1, nb +1):
+        image = requests.get("https://picsum.photos/800/600?random="+ str(i))
+
+        if image.status_code == 200: #verifications
+            chemin_fichier = os.path.join("images", "image_" + str(i) + ".jpg") #chemin de l'image plus son nom
+            #ouvrir le fichier
+            fichier = open(chemin_fichier, 'wb')
+            # écrire la contenu du retour de la requête
+            fichier.write(image.content)
+            # fermer le fichier
+            fichier.close()
+            # témoin de sauvegarde dans la console
+            print("Image " + str(i) + " " +"téléchargée")
+telecharger_images()
+
+
+
+################################# Script 2 : 05/02/2026 (création du diaporama) #####################################
+
+#import des packages
+import os
+from moviepy import *
+# appel de la fonction de téléchargement image.
+choix= input("voulez-vous télécharger de nouvelles images? O/N") #savoir si l'utilisateur veux utiliser les images existantes ou en retélécharger
+if choix.upper() == "O" or choix.lower()=="o" or choix == "oui":
+    print ("Lencement téléchargement images:")
+    from miniProj import telecharger_images
+
+# Dossier contenant tes photos
+chemin_fichier = os.path.join("images")
+# Récupère tous les fichiers images dans une liste
+images = [] #creation d'une liste vide
+# Pour chaque images dans le dossier "images" je l'ajoute à ma liste
+for i in os.listdir(chemin_fichier):
+    chemin_image = os.path.join(chemin_fichier, i)
+    images.append(chemin_image)# Ajoute à ma liste
+# Crée la vidéo 
+diapo = ImageSequenceClip(images, fps=0.2)  # fps temps de l'image
+#ajout de la musique téléchargé dans mon dossier de travail
+musique = AudioFileClip("Musique Libre de Droits Dynamique Rock Guitare Gratuite  JR Tundra - Hitting the Streets.mp3") #chercher la musique et placer dans objet musique
+diapo = diapo.with_audio(musique) # ajout a mon objet diapo
+diapo.write_videofile("Diapo_images.mp4", fps=24)# Sauvegarde la vidéo
+print ("C'est bon ton diaporama est créé !")
+
+            
