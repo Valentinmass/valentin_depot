@@ -22,11 +22,11 @@ library(scales)
 
 
 ```{r logo, echo=FALSE, out.width = '50%', fig.align = "center", fig.cap="Logo  ISARA"}
-knitr::include_graphics("logo isara.png")
+knitr::include_graphics("logo_isara.png")
 ```
 \newpage
 ```{r imports, echo=FALSE, eval=TRUE}
-read_excel("Impact quantitatif de la PLF sur la santé des animaux laitiers..xlsx" ,na = "NA") -> impact 
+read_excel("impact.xlsx" ,na = "NA") -> impact 
 
 # Transformer en format long
 impact %>%
